@@ -1,7 +1,7 @@
 # Docker-Fundamentals
 #### URLs
   - PR: 
-    - [PR]()
+    - [PR](https://github.com/kevlar2/docker-fundamentals/pull/1)
   - Docker Hum images links:
     - [Stamp](https://hub.docker.com/r/devopskevlar/stamp) 
     - [Envprobe](https://hub.docker.com/r/devopskevlar/envprobe)
@@ -149,4 +149,4 @@ In this project, I created three distinct images using a streamlined Dockerfile 
 #### Exec (inside envprobe)
 ![exec-proof-inside-envprobe](./images/introspection/exec-proof-inside-envprobe.png)
 
--Removing the container or creating a new one from the same image will not preserve envprobe-test-file.txt, as it's created at runtime and not part of the image.
+- Removing the container or creating a new one from the same image will not preserve envprobe-test-file.txt, as it's created at runtime and not part of the image.
