@@ -2,7 +2,7 @@
 #### URLs
   - PR: 
     - [PR](https://github.com/kevlar2/docker-fundamentals/pull/1)
-  - Docker Hum images links:
+  - Docker Hub images links:
     - [Stamp](https://hub.docker.com/r/devopskevlar/stamp) 
     - [Envprobe](https://hub.docker.com/r/devopskevlar/envprobe)
     - [Miniweb](https://hub.docker.com/r/devopskevlar/miniweb)
@@ -107,7 +107,7 @@ In this project, I created three distinct images using a streamlined Dockerfile 
 
 ![dns-names-miniweb](./images/network/dns-names-miniweb.png)
 
-  - Docker aliases works be adding multiple DNS name that resolves to the same container ip address with a user defined network. Allow the same service to ve reached vai different names.
+  - Docker aliases works be adding multiple DNS name that resolves to the same container ip address with a user defined network. Allows the same service to be reached via different names or hostname.
 
 #### Host network (observation)
 
@@ -120,6 +120,27 @@ In this project, I created three distinct images using a streamlined Dockerfile 
   - This properly maps the container ports to your macOS host ports.
 
         docker run -d --name miniweb -p 80:80 -p 8080:8080 devopskevlar/miniweb:v1
+
+  #### Other ways to test containers deployed on host network (macOS)
+  - Since macOS doesn't fully support Docker's host network mode, I used an alternative testing approach: running another container with host networking to access the target container. I chose BusyBox for this task due to its lightweight nature. Below are the commands I used.
+
+        # Test HTTP connectivity on port 80
+        - docker run --rm --network host busybox sh -c "wget -qO- localhost:80 | grep title -A 0"
+
+        # Test HTTP connectivity on port 8080
+        - docker run --rm --network host busybox sh -c "wget -qO- localhost:8080 | grep title -A 0"
+
+        # Test basic network connectivity (without port)
+        - docker run --rm --network host busybox sh -c "ping -c 5 localhost"
+
+        # Test TCP port connectivity using netcat (if available in busybox)
+        docker run --rm --network host busybox sh -c "nc -zv localhost 80"
+
+        # Access another container's network namespace
+        - docker run -it --rm --network container:<container_name> busybox sh
+
+        # Interactive test
+        docker run -it --rm --network host busybox sh
 
 ### Introspection, basic lifecycle, and hygiene
 
@@ -149,4 +170,4 @@ In this project, I created three distinct images using a streamlined Dockerfile 
 #### Exec (inside envprobe)
 ![exec-proof-inside-envprobe](./images/introspection/exec-proof-inside-envprobe.png)
 
-- Removing the container or creating a new one from the same image will not preserve envprobe-test-file.txt, as it's created at runtime and not part of the image.
+- Removing the container or creating a new one from the same image will not preserve envprobe-test-file.txt, as it was created at runtime and not part of the image.
