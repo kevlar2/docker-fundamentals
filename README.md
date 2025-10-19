@@ -141,6 +141,10 @@ In this project, I created three distinct images using a streamlined Dockerfile 
 
         # Interactive test
         docker run -it --rm --network host busybox sh
+          - Get host ip: ip addr show 
+          - curl -I http://host-ip:port - curl not available in busy box
+          - wget -qO- http://host-ip:port
+          - ping -c 5 host-ip
 
 ### Introspection, basic lifecycle, and hygiene
 
